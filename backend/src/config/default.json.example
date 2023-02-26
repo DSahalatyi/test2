@@ -8,5 +8,5 @@
     "refreshTokenExpiresIn": "7d",
     "refreshTokenExpiresInDays": 7,
     "clientURL": "http://localhost:3000",
-    "debug": false
+    "debug": true
 }
