@@ -1,0 +1,69 @@
+
+name: CI test
+
+on: [push, pull request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Copy to .env
+        run: cp ./.env.example ./.env
+
+      - name: Copy to default.json
+        run: cp ./backend/src/config/default.json.example ./backend/src/config/default.json
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: '6.0'
+
+      - name: Install Node.js 19.4.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.4.0'
+
+      - name: Install Yarn
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+          dir: ./backend/src
+
+      - name: Start Yarn server
+        working-directory: ./backend/src
+        run: nohup yarn start &
+
+      - name: Install Python 3.11.1
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.1'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test with pytest
+        run: pytest --alluredir=allure-results
+
+      - name: Allure results
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          gh_pages: gh-pages
+          allure_history: allure-history
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
