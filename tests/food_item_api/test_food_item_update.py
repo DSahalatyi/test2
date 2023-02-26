@@ -140,9 +140,7 @@ def test_attempt_update_food_item_with_empty_is_available(client_is_staff_token,
 def test_attempt_update_food_item_with_image_name_mismatch(client_is_staff_token, test_food_item_info, db_utility):
     test_food_item_info["image"] = "image.png"
     initial_food_item = list(db_utility.fooditems.find({}))[0]
-    import pdb;pdb.set_trace()
     response = client_is_staff_token.post(
         f"api/food-item/{initial_food_item['_id']}/update", data=test_food_item_info, files=update_image
     )
-    import pdb; pdb.set_trace()
     assert response.status_code == 200
