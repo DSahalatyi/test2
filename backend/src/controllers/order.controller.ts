@@ -19,7 +19,7 @@ class OrderController {
     
     async getAll(req: Request, res: Response){
         const docList: IOrder[] = await this.OrderSerive.getAll()
-
+        
         return res.status(200).json({
             status: 200,
             docList

@@ -15,7 +15,7 @@ jobs:
         run: cp ./.env.example ./.env
 
       - name: Copy to default.json
-        run: cp ./backend/src/config/default.json.example ./backend/src/config/default.json
+        run: cp ./backend/src/config/default.json.test ./backend/src/config/default.json
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0

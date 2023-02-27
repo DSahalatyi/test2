@@ -22,6 +22,6 @@ router.get('/:id/delete', checkJWT, checkIsStaff, errorWrapper(foodItemControlle
 router.post('/create', checkJWT, checkIsStaff, bodyValidator(foodItemSchema), errorWrapper(foodItemController.create.bind(foodItemController)))
 
 // api/food-item/:id/update
-router.post('/:id/update', checkJWT, checkIsStaff, bodyValidator(foodItemSchema), errorWrapper(foodItemController.update.bind(foodItemController)))
+router.post('/:id/update', checkJWT, checkIsStaff, errorWrapper(foodItemController.update.bind(foodItemController)))
 
 export default router;
