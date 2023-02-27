@@ -7,9 +7,7 @@ import { orderSchema } from '../../models/validates/order.joi';
 import { checkJWT } from '../../middlewares/check.jwt';
 import { checkIsStaff } from '../../middlewares/check.is.staff';
 
-
 const router: Router = Router()
-
 
 // api/order/get-all
 router.get('/get-all', checkJWT, checkIsStaff, errorWrapper(orderController.getAll.bind(orderController)))
